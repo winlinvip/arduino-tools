@@ -1,5 +1,3 @@
-#include <RTClib.h>
-
 #include <SimpleDHT.h>
 
 int pinDHT11 = 2;

@@ -14,5 +14,5 @@ void loop() {
   // echo the serial data.
   Serial.print((char)Serial.read());
   digitalWrite(13, HIGH);
-  delay(100);
+  delay(10);
 }
