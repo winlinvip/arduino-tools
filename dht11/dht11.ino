@@ -1,7 +1,10 @@
+#include <RTClib.h>
+
 #include <SimpleDHT.h>
 
 int pinDHT11 = 2;
 int pinLED = 13;
+SimpleDHT11 dht11;
 
 void setup() {
   pinMode(pinLED, OUTPUT);
@@ -14,7 +17,7 @@ void example_without_raw_bits() {
   // read without samples.
   byte temperature = 0;
   byte humidity = 0;
-  if ((ret = simple_dht11_read(pinDHT11, &temperature, &humidity, NULL)) != 0) {
+  if ((ret = dht11.read(pinDHT11, &temperature, &humidity, NULL)) != 0) {
     Serial.print("Read DHT11 failed. ret=");
     Serial.println(ret);
     return;
@@ -34,13 +37,21 @@ void example_with_raw_bits() {
   byte temperature = 0;
   byte humidity = 0;
   byte data[40] = {0};
-  if ((ret = simple_dht11_read(pinDHT11, &temperature, &humidity, data)) != 0) {
+  if ((ret = dht11.read(pinDHT11, &temperature, &humidity, data)) != 0) {
     Serial.print("Read DHT11 failed. ret=");
     Serial.println(ret);
     return;
   }
+  
   Serial.print("Sample RAW: ");
-  simple_dht11_serial_print(data);
+  for (int i = 0; i < 40; i++) {
+    Serial.print((int)data[i]);
+    if (i > 0 && ((i + 1) % 4) == 0) {
+      Serial.print(' ');
+    }
+  }
+  Serial.println("");
+  
   Serial.print("Sample OK: ");
   Serial.print((int)temperature); Serial.print(" *C, ");
   Serial.print((int)humidity); Serial.println(" %");
